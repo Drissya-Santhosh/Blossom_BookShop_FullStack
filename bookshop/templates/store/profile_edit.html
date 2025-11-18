@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Profile | BookShop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff5f7;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .edit-profile-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            color: #e83e8c;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .success-message {
+            color: #388e3c;
+            background-color: #e8f5e9;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
+            border-left: 4px solid #388e3c;
+        }
+
+        fieldset {
+            border: 1px solid #f8bbd0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        legend {
+            color: #e83e8c;
+            font-weight: 600;
+            padding: 0 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        input[type="file"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #f8bbd0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #e83e8c;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(232, 62, 140, 0.2);
+        }
+
+        .profile-pic-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #fce4ec;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .save-btn, .cancel-btn {
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .save-btn {
+            background-color: #e83e8c;
+            color: white;
+        }
+
+        .save-btn:hover {
+            background-color: #d81b60;
+        }
+
+        .cancel-btn {
+            background-color: #fce4ec;
+            color: #e83e8c;
+        }
+
+        .cancel-btn:hover {
+            background-color: #f8bbd0;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #e83e8c;
+            text-decoration: none;
+            margin-top: 30px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s;
+            border: 1px solid #f8bbd0;
+        }
+
+        .back-link:hover {
+            background-color: #fce4ec;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .edit-profile-card {
+                padding: 25px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .save-btn, .cancel-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="edit-profile-card">
+            <h2>✏️ Edit Profile</h2>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="success-message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <fieldset>
+                    <legend>Basic Info</legend>
+                    {% for field in user_form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <small style="color: #d32f2f;">{{ field.errors|join:", " }}</small>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </fieldset>
+
+                <fieldset>
+                    <legend>Contact & Profile</legend>
+                    {% for field in profile_form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <small style="color: #d32f2f;">{{ field.errors|join:", " }}</small>
+                            {% endif %}
+                            {% if field.help_text %}
+                                <small style="color: #888;">{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    {% if request.user.userprofile.profile_pic %}
+                        <div class="profile-pic-container">
+                            <img src="{{ request.user.userprofile.profile_pic.url }}" alt="Current Profile Picture" class="profile-pic">
+                        </div>
+                    {% endif %}
+                </fieldset>
+
+                <div class="action-buttons">
+                    <button type="submit" class="save-btn">✅ Save Changes</button>
+                    <a href="{% url 'profile' %}">
+                        <button type="button" class="cancel-btn">Cancel</button>
+                    </a>
+                </div>
+            </form>
+
+            <a href="{% url 'profile' %}" class="back-link">← Back to Profile</a>
+        </div>
+    </div>
+</body>
+</html>

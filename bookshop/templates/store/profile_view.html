@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Profile | BookShop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff5f7;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .profile-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        h2 {
+            color: #e83e8c;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #fce4ec;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .profile-details {
+            text-align: left;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+
+        .profile-details p {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #f8bbd0;
+        }
+
+        .profile-details strong {
+            color: #e83e8c;
+            min-width: 120px;
+            display: inline-block;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .edit-btn, .password-btn {
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .edit-btn {
+            background-color: #e83e8c;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #d81b60;
+        }
+
+        .password-btn {
+            background-color: #fce4ec;
+            color: #e83e8c;
+        }
+
+        .password-btn:hover {
+            background-color: #f8bbd0;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #e83e8c;
+            text-decoration: none;
+            margin-top: 30px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s;
+            border: 1px solid #f8bbd0;
+        }
+
+        .back-link:hover {
+            background-color: #fce4ec;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .profile-card {
+                padding: 25px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .edit-btn, .password-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .profile-details p {
+                font-size: 0.95rem;
+            }
+
+            .profile-details strong {
+                min-width: 90px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-card">
+            <h2>👤 My Profile</h2>
+
+            {% if profile.profile_pic %}
+                <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" class="profile-pic">
+            {% else %}
+                <div class="profile-pic" style="background-color: #fce4ec; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 3rem; color: #e83e8c;">👤</span>
+                </div>
+            {% endif %}
+
+            <div class="profile-details">
+                <p><strong>First Name:</strong> {{ user.first_name|default:"Not provided" }}</p>
+                <p><strong>Last Name:</strong> {{ user.last_name|default:"Not provided" }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Phone:</strong> {{ profile.phone|default:"Not provided" }}</p>
+                <p><strong>Address:</strong> {{ profile.address|default:"Not provided" }}</p>
+            </div>
+
+            <div class="action-buttons">
+                <a href="{% url 'edit_profile' %}">
+                    <button class="edit-btn">✏️ Edit Profile</button>
+                </a>
+
+                <a href="{% url 'change_password' %}">
+                    <button class="password-btn">🔒 Change Password</button>
+                </a>
+            </div>
+
+            <a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

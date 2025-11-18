@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Successful | BookShop</title>
+    <style>
+        body {
+            background-color: #fff0f5;
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            padding: 100px;
+        }
+        h1 {
+            color: #4caf50;
+            font-size: 2.5rem;
+        }
+        p {
+            font-size: 1.2rem;
+            color: #555;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #e83e8c;
+            color: white;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+        }
+        a:hover {
+            background-color: #c2185b;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎉 Payment Successful!</h1>
+    <p>Your order has been placed successfully. Thank you for shopping with us!</p>
+    <a href="{% url 'home' %}">Continue Shopping</a>
+</body>
+</html>
